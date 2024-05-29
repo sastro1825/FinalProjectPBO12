@@ -10,26 +10,47 @@ import java.sql.SQLException;
 public class TambahDurasiSewaFrame extends JFrame {
 
     private JTextField namaField;
-    private JTextField modelMobilField;
-    private JTextField tanggalMulaiField;
-    private JTextField durasiField;
+    private JTextField nikField;
+    private JTextField alamatField;
+    private JTextField noHPField;
+    private JTextField tipeMobilField;
+    private JTextField tahunMobilSewaField;
+    private JTextField nopolField;
+    private JTextField tglSewaField;
+    private JTextField tglKembaliField;
+    private JTextField supirField;
+    private JTextField totalHargaField;
 
     public TambahDurasiSewaFrame() {
         setTitle("Tambah Durasi Sewa - Rental Mobil");
-        setSize(400, 300);
+        setSize(600, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
         JLabel namaLabel = new JLabel("Nama:");
-        JLabel modelMobilLabel = new JLabel("Model Mobil:");
-        JLabel tanggalMulaiLabel = new JLabel("Tanggal Mulai (yyyy-mm-dd):");
-        JLabel durasiLabel = new JLabel("Durasi (hari):");
-        
+        JLabel nikLabel = new JLabel("NIK:");
+        JLabel alamatLabel = new JLabel("Alamat:");
+        JLabel noHPLabel = new JLabel("No HP:");
+        JLabel tipeMobilLabel = new JLabel("Tipe Mobil:");
+        JLabel tahunMobilSewaLabel = new JLabel("Tahun Mobil Sewa:");
+        JLabel nopolLabel = new JLabel("Nopol:");
+        JLabel tglSewaLabel = new JLabel("Tanggal Sewa (yyyy-mm-dd):");
+        JLabel tglKembaliLabel = new JLabel("Tanggal Kembali (yyyy-mm-dd):");
+        JLabel supirLabel = new JLabel("Supir (Ya/Tidak):");
+        JLabel totalHargaLabel = new JLabel("Total Harga:");
+
         namaField = new JTextField(20);
-        modelMobilField = new JTextField(20);
-        tanggalMulaiField = new JTextField(20);
-        durasiField = new JTextField(20);
-        
+        nikField = new JTextField(20);
+        alamatField = new JTextField(20);
+        noHPField = new JTextField(20);
+        tipeMobilField = new JTextField(20);
+        tahunMobilSewaField = new JTextField(20);
+        nopolField = new JTextField(20);
+        tglSewaField = new JTextField(20);
+        tglKembaliField = new JTextField(20);
+        supirField = new JTextField(20);
+        totalHargaField = new JTextField(20);
+
         JButton submitButton = new JButton("Submit");
 
         setLayout(new GridBagLayout());
@@ -46,30 +67,86 @@ public class TambahDurasiSewaFrame extends JFrame {
 
         gbc.gridx = 0;
         gbc.gridy = 1;
-        add(modelMobilLabel, gbc);
+        add(nikLabel, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 1;
-        add(modelMobilField, gbc);
+        add(nikField, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 2;
-        add(tanggalMulaiLabel, gbc);
+        add(alamatLabel, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 2;
-        add(tanggalMulaiField, gbc);
+        add(alamatField, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 3;
-        add(durasiLabel, gbc);
+        add(noHPLabel, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 3;
-        add(durasiField, gbc);
+        add(noHPField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        add(tipeMobilLabel, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 4;
+        add(tipeMobilField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        add(tahunMobilSewaLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 5;
+        add(tahunMobilSewaField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        add(nopolLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 6;
+        add(nopolField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 7;
+        add(tglSewaLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 7;
+        add(tglSewaField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 8;
+        add(tglKembaliLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 8;
+        add(tglKembaliField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 9;
+        add(supirLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 9;
+        add(supirField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 10;
+        add(totalHargaLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 10;
+        add(totalHargaField, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 11;
         add(submitButton, gbc);
 
         submitButton.addActionListener(new ActionListener() {
@@ -84,29 +161,50 @@ public class TambahDurasiSewaFrame extends JFrame {
 
     private void handleSubmit() {
         String nama = namaField.getText();
-        String modelMobil = modelMobilField.getText();
-        String tanggalMulai = tanggalMulaiField.getText();
-        int durasi;
+        String nik = nikField.getText();
+        String alamat = alamatField.getText();
+        String noHP = noHPField.getText();
+        String tipeMobil = tipeMobilField.getText();
+        int tahunMobilSewa;
+        String nopol = nopolField.getText();
+        String tglSewa = tglSewaField.getText();
+        String tglKembali = tglKembaliField.getText();
+        String supir = supirField.getText();
+        int totalHarga;
 
         try {
-            durasi = Integer.parseInt(durasiField.getText());
+            tahunMobilSewa = Integer.parseInt(tahunMobilSewaField.getText());
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Durasi harus berupa angka", "Kesalahan Input", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Tahun Mobil Sewa harus berupa angka", "Kesalahan Input", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        if (tambahDurasiSewa(nama, modelMobil, tanggalMulai, durasi)) {
+        try {
+            totalHarga = Integer.parseInt(totalHargaField.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Total Harga harus berupa angka", "Kesalahan Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (tambahDurasiSewa(nama, nik, alamat, noHP, tipeMobil, tahunMobilSewa, nopol, tglSewa, tglKembali, supir, totalHarga)) {
             JOptionPane.showMessageDialog(this, "Durasi sewa berhasil ditambahkan");
             namaField.setText("");
-            modelMobilField.setText("");
-            tanggalMulaiField.setText("");
-            durasiField.setText("");
+            nikField.setText("");
+            alamatField.setText("");
+            noHPField.setText("");
+            tipeMobilField.setText("");
+            tahunMobilSewaField.setText("");
+            nopolField.setText("");
+            tglSewaField.setText("");
+            tglKembaliField.setText("");
+            supirField.setText("");
+            totalHargaField.setText("");
         } else {
             JOptionPane.showMessageDialog(this, "Gagal menambahkan durasi sewa", "Kesalahan Database", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private boolean tambahDurasiSewa(String nama, String modelMobil, String tanggalMulai, int durasi) {
+    private boolean tambahDurasiSewa(String nama, String nik, String alamat, String noHP, String tipeMobil, int tahunMobilSewa, String nopol, String tglSewa, String tglKembali, String supir, int totalHarga) {
         Connection connection = null;
         PreparedStatement statement = null;
         boolean isSuccess = false;
@@ -118,12 +216,19 @@ public class TambahDurasiSewaFrame extends JFrame {
 
             connection = DriverManager.getConnection(url, dbUsername, dbPassword);
 
-            String query = "INSERT INTO sewa (nama, model_mobil, tanggal_mulai, durasi) VALUES (?, ?, ?, ?)";
+            String query = "INSERT INTO sewa (namaPenyewa, nik, alamat, noHP, tipeMobil, tahunMobilSewa, nopol, tglSewa, tglKembali, supir, totalHarga) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             statement = connection.prepareStatement(query);
             statement.setString(1, nama);
-            statement.setString(2, modelMobil);
-            statement.setString(3, tanggalMulai);
-            statement.setInt(4, durasi);
+            statement.setString(2, nik);
+            statement.setString(3, alamat);
+            statement.setString(4, noHP);
+            statement.setString(5, tipeMobil);
+            statement.setInt(6, tahunMobilSewa);
+            statement.setString(7, nopol);
+            statement.setString(8, tglSewa);
+            statement.setString(9, tglKembali);
+            statement.setString(10, supir);
+            statement.setInt(11, totalHarga);
 
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
