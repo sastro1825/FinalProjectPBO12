@@ -1,3 +1,5 @@
+package loginframe;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -92,6 +94,10 @@ public class LoginFrame extends JFrame {
 
             if (resultSet.next()) {
                 isValidUser = true;
+                this.dispose();
+                
+                menu Menu = new menu();
+                Menu.setVisible(true);
             }
         } catch (SQLException e) {
             e.printStackTrace();
