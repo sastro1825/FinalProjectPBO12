@@ -78,11 +78,80 @@ CREATE TABLE `users` (
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+DROP TABLE IF EXISTS `mobilkembalian`;
+
+CREATE TABLE `mobilkembalian` (
+  `idKembali` int(11) NOT NULL AUTO_INCREMENT,
+  `idSewa` int(11) NOT NULL,
+  `namaPenyewa` varchar(100) NOT NULL,
+  `nik` varchar(20) NOT NULL,
+  `alamat` varchar(50) NOT NULL,
+  `noHP` char(15) NOT NULL,
+  `tipeMobil` varchar(50) NOT NULL,
+  `tahunMobilSewa` int(4) NOT NULL,
+  `nopol` varchar(15) NOT NULL,
+  `tglSewa` date NOT NULL,
+  `tglKembali` date NOT NULL,
+  `supir` char(15) NOT NULL,
+  `totalHarga` int(11) NOT NULL,
+  PRIMARY KEY (`idKembali`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 /*Data for the table `users` */
 
 insert  into `users`(`id`,`username`,`PASSWORD`) values 
 (1,'admin','12345678'),
 (2,'staff','12345678');
+
+DELIMITER //
+
+CREATE PROCEDURE KembalikanMobil(
+    IN pNamaPenyewa VARCHAR(100),
+    IN pTipeMobil VARCHAR(50),
+    IN pTglKembali DATE
+)
+BEGIN
+    DECLARE exit handler for sqlexception
+    BEGIN
+
+        ROLLBACK;
+    END;
+    START TRANSACTION;
+
+    SELECT * FROM sewa
+    WHERE namaPenyewa = pNamaPenyewa
+      AND tipeMobil = pTipeMobil
+      AND tglKembali IS NULL;
+
+    UPDATE sewa
+    SET tglKembali = pTglKembali
+    WHERE namaPenyewa = pNamaPenyewa
+      AND tipeMobil = pTipeMobil
+      AND tglKembali IS NULL;
+
+    SELECT ROW_COUNT() AS RowsUpdated;
+
+    IF ROW_COUNT() = 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'No matching rental record found or car already returned';
+    ELSE
+        INSERT INTO mobilkembalian (idSewa, namaPenyewa, nik, alamat, noHP, tipeMobil, tahunMobilSewa, nopol, tglSewa, tglKembali, supir, totalHarga)
+        SELECT idSewa, namaPenyewa, nik, alamat, noHP, tipeMobil, tahunMobilSewa, nopol, tglSewa, pTglKembali, supir, totalHarga
+        FROM sewa
+        WHERE namaPenyewa = pNamaPenyewa
+          AND tipeMobil = pTipeMobil
+          AND tglKembali = pTglKembali;
+
+        DELETE FROM sewa
+        WHERE namaPenyewa = pNamaPenyewa
+          AND tipeMobil = pTipeMobil
+          AND tglKembali = pTglKembali;
+    END IF;
+
+    COMMIT;
+END //
+
+DELIMITER ;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

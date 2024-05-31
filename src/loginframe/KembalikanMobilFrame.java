@@ -1,4 +1,7 @@
+package loginframe;
+
 import javax.swing.*;
+import com.toedter.calendar.JDateChooser;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,12 +9,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.sql.CallableStatement;
 
 public class KembalikanMobilFrame extends JFrame {
 
     private JTextField namaField;
     private JTextField modelMobilField;
-    private JTextField tanggalKembaliField;
+    private JDateChooser tanggalKembaliChooser;
 
     public KembalikanMobilFrame() {
         setTitle("Kembalikan Mobil - Rental Mobil");
@@ -21,11 +26,12 @@ public class KembalikanMobilFrame extends JFrame {
 
         JLabel namaLabel = new JLabel("Nama:");
         JLabel modelMobilLabel = new JLabel("Model Mobil:");
-        JLabel tanggalKembaliLabel = new JLabel("Tanggal Kembali (yyyy-mm-dd):");
+        JLabel tanggalKembaliLabel = new JLabel("Tanggal Kembali:");
 
         namaField = new JTextField(20);
         modelMobilField = new JTextField(20);
-        tanggalKembaliField = new JTextField(20);
+        tanggalKembaliChooser = new JDateChooser();
+        tanggalKembaliChooser.setDateFormatString("yyyy-MM-dd");
 
         JButton submitButton = new JButton("Submit");
 
@@ -55,7 +61,7 @@ public class KembalikanMobilFrame extends JFrame {
 
         gbc.gridx = 1;
         gbc.gridy = 2;
-        add(tanggalKembaliField, gbc);
+        add(tanggalKembaliChooser, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 3;
@@ -74,34 +80,38 @@ public class KembalikanMobilFrame extends JFrame {
     private void handleSubmit() {
         String nama = namaField.getText();
         String modelMobil = modelMobilField.getText();
-        String tanggalKembali = tanggalKembaliField.getText();
+
+        // Mengambil tanggal kembali dari JDateChooser
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tanggalKembali = sdf.format(tanggalKembaliChooser.getDate());
 
         if (kembalikanMobil(nama, modelMobil, tanggalKembali)) {
             JOptionPane.showMessageDialog(this, "Mobil berhasil dikembalikan");
             namaField.setText("");
             modelMobilField.setText("");
-            tanggalKembaliField.setText("");
+            tanggalKembaliChooser.setDate(null); // Mengatur kembali tanggal ke null setelah submit berhasil
         } else {
             JOptionPane.showMessageDialog(this, "Gagal mengembalikan mobil", "Kesalahan Database", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private boolean kembalikanMobil(String nama, String modelMobil, String tanggalKembali) {
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rental_mobil", "root", "");
-             PreparedStatement statement = connection.prepareStatement("UPDATE sewa SET tanggal_kembali = ? WHERE nama = ? AND model_mobil = ? AND tanggal_kembali IS NULL")) {
+private boolean kembalikanMobil(String nama, String modelMobil, String tanggalKembali) {
+    try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rental_mobil", "root", "");
+         CallableStatement statement = connection.prepareCall("CALL KembalikanMobil(?,?,?)")) {
 
-            statement.setString(1, tanggalKembali);
-            statement.setString(2, nama);
-            statement.setString(3, modelMobil);
+        statement.setString(1, nama);
+        statement.setString(2, modelMobil);
+        statement.setDate(3, java.sql.Date.valueOf(tanggalKembali));
 
-            int rowsUpdated = statement.executeUpdate();
-            return rowsUpdated > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Kesalahan database: " + e.getMessage(), "Kesalahan Database", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
+        statement.execute();
+
+        return true;
+    } catch (SQLException e) {
+        e.printStackTrace(); // Cetak stack trace untuk melihat detail kesalahan
+        JOptionPane.showMessageDialog(this, "Kesalahan database: " + e.getMessage(), "Kesalahan Database", JOptionPane.ERROR_MESSAGE);
+        return false;
     }
+}
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
