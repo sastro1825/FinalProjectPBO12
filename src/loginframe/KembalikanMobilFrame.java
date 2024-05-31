@@ -81,7 +81,6 @@ public class KembalikanMobilFrame extends JFrame {
         String nama = namaField.getText();
         String modelMobil = modelMobilField.getText();
 
-        // Mengambil tanggal kembali dari JDateChooser
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String tanggalKembali = sdf.format(tanggalKembaliChooser.getDate());
 
@@ -89,7 +88,7 @@ public class KembalikanMobilFrame extends JFrame {
             JOptionPane.showMessageDialog(this, "Mobil berhasil dikembalikan");
             namaField.setText("");
             modelMobilField.setText("");
-            tanggalKembaliChooser.setDate(null); // Mengatur kembali tanggal ke null setelah submit berhasil
+            tanggalKembaliChooser.setDate(null); 
         } else {
             JOptionPane.showMessageDialog(this, "Gagal mengembalikan mobil", "Kesalahan Database", JOptionPane.ERROR_MESSAGE);
         }
@@ -107,7 +106,7 @@ private boolean kembalikanMobil(String nama, String modelMobil, String tanggalKe
 
         return true;
     } catch (SQLException e) {
-        e.printStackTrace(); // Cetak stack trace untuk melihat detail kesalahan
+        e.printStackTrace(); 
         JOptionPane.showMessageDialog(this, "Kesalahan database: " + e.getMessage(), "Kesalahan Database", JOptionPane.ERROR_MESSAGE);
         return false;
     }
