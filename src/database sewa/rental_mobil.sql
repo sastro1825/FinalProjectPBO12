@@ -103,6 +103,8 @@ insert  into `users`(`id`,`username`,`PASSWORD`) values
 (1,'admin','12345678'),
 (2,'staff','12345678');
 
+/*procedure for kembalikan mobil*/
+
 DELIMITER //
 
 CREATE PROCEDURE KembalikanMobil(
