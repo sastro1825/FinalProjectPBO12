@@ -1,3 +1,6 @@
+package loginframe;
+
+import com.toedter.calendar.JDateChooser;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -6,6 +9,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import loginframe.menu;
 
 public class TambahDurasiSewaFrame extends JFrame {
 
@@ -16,8 +21,8 @@ public class TambahDurasiSewaFrame extends JFrame {
     private JTextField tipeMobilField;
     private JTextField tahunMobilSewaField;
     private JTextField nopolField;
-    private JTextField tglSewaField;
-    private JTextField tglKembaliField;
+    private JDateChooser tglSewaChooser;
+    private JDateChooser tglKembaliChooser;
     private JTextField supirField;
     private JTextField totalHargaField;
 
@@ -26,18 +31,33 @@ public class TambahDurasiSewaFrame extends JFrame {
         setSize(600, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        
+        // Set background color
+        getContentPane().setBackground(Color.decode("#0B60B0"));
 
+        // Create labels and set their foreground to white
         JLabel namaLabel = new JLabel("Nama:");
+        namaLabel.setForeground(Color.WHITE);
         JLabel nikLabel = new JLabel("NIK:");
+        nikLabel.setForeground(Color.WHITE);
         JLabel alamatLabel = new JLabel("Alamat:");
+        alamatLabel.setForeground(Color.WHITE);
         JLabel noHPLabel = new JLabel("No HP:");
+        noHPLabel.setForeground(Color.WHITE);
         JLabel tipeMobilLabel = new JLabel("Tipe Mobil:");
+        tipeMobilLabel.setForeground(Color.WHITE);
         JLabel tahunMobilSewaLabel = new JLabel("Tahun Mobil Sewa:");
+        tahunMobilSewaLabel.setForeground(Color.WHITE);
         JLabel nopolLabel = new JLabel("Nopol:");
-        JLabel tglSewaLabel = new JLabel("Tanggal Sewa (yyyy-mm-dd):");
-        JLabel tglKembaliLabel = new JLabel("Tanggal Kembali (yyyy-mm-dd):");
+        nopolLabel.setForeground(Color.WHITE);
+        JLabel tglSewaLabel = new JLabel("Tanggal Sewa:");
+        tglSewaLabel.setForeground(Color.WHITE);
+        JLabel tglKembaliLabel = new JLabel("Tanggal Kembali:");
+        tglKembaliLabel.setForeground(Color.WHITE);
         JLabel supirLabel = new JLabel("Supir (Ya/Tidak):");
+        supirLabel.setForeground(Color.WHITE);
         JLabel totalHargaLabel = new JLabel("Total Harga:");
+        totalHargaLabel.setForeground(Color.WHITE);
 
         namaField = new JTextField(20);
         nikField = new JTextField(20);
@@ -46,108 +66,55 @@ public class TambahDurasiSewaFrame extends JFrame {
         tipeMobilField = new JTextField(20);
         tahunMobilSewaField = new JTextField(20);
         nopolField = new JTextField(20);
-        tglSewaField = new JTextField(20);
-        tglKembaliField = new JTextField(20);
+        tglSewaChooser = new JDateChooser();
+        tglKembaliChooser = new JDateChooser();
         supirField = new JTextField(20);
         totalHargaField = new JTextField(20);
 
         JButton submitButton = new JButton("Submit");
+        JButton backButton = new JButton("Kembali");
 
+        // Set layout manager
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-
         gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        add(namaLabel, gbc);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
 
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        add(namaField, gbc);
+        // Add components to the frame
+        addComponent(gbc, 0, 0, namaLabel);
+        addComponent(gbc, 1, 0, namaField);
+        addComponent(gbc, 0, 1, nikLabel);
+        addComponent(gbc, 1, 1, nikField);
+        addComponent(gbc, 0, 2, alamatLabel);
+        addComponent(gbc, 1, 2, alamatField);
+        addComponent(gbc, 0, 3, noHPLabel);
+        addComponent(gbc, 1, 3, noHPField);
+        addComponent(gbc, 0, 4, tipeMobilLabel);
+        addComponent(gbc, 1, 4, tipeMobilField);
+        addComponent(gbc, 0, 5, tahunMobilSewaLabel);
+        addComponent(gbc, 1, 5, tahunMobilSewaField);
+        addComponent(gbc, 0, 6, nopolLabel);
+        addComponent(gbc, 1, 6, nopolField);
+        addComponent(gbc, 0, 7, tglSewaLabel);
+        addComponent(gbc, 1, 7, tglSewaChooser);
+        addComponent(gbc, 0, 8, tglKembaliLabel);
+        addComponent(gbc, 1, 8, tglKembaliChooser);
+        addComponent(gbc, 0, 9, supirLabel);
+        addComponent(gbc, 1, 9, supirField);
+        addComponent(gbc, 0, 10, totalHargaLabel);
+        addComponent(gbc, 1, 10, totalHargaField);
+        addComponent(gbc, 0, 11, backButton);
+        addComponent(gbc, 1, 11, submitButton);
 
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        add(nikLabel, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        add(nikField, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        add(alamatLabel, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        add(alamatField, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        add(noHPLabel, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 3;
-        add(noHPField, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        add(tipeMobilLabel, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 4;
-        add(tipeMobilField, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 5;
-        add(tahunMobilSewaLabel, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 5;
-        add(tahunMobilSewaField, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 6;
-        add(nopolLabel, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 6;
-        add(nopolField, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 7;
-        add(tglSewaLabel, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 7;
-        add(tglSewaField, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 8;
-        add(tglKembaliLabel, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 8;
-        add(tglKembaliField, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 9;
-        add(supirLabel, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 9;
-        add(supirField, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 10;
-        add(totalHargaLabel, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 10;
-        add(totalHargaField, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 11;
-        add(submitButton, gbc);
+        // Add action listeners to buttons
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new menu().setVisible(true);
+            }
+        });
 
         submitButton.addActionListener(new ActionListener() {
             @Override
@@ -159,6 +126,12 @@ public class TambahDurasiSewaFrame extends JFrame {
         setVisible(true);
     }
 
+    private void addComponent(GridBagConstraints gbc, int x, int y, Component component) {
+        gbc.gridx = x;
+        gbc.gridy = y;
+        add(component, gbc);
+    }
+
     private void handleSubmit() {
         String nama = namaField.getText();
         String nik = nikField.getText();
@@ -167,8 +140,9 @@ public class TambahDurasiSewaFrame extends JFrame {
         String tipeMobil = tipeMobilField.getText();
         int tahunMobilSewa;
         String nopol = nopolField.getText();
-        String tglSewa = tglSewaField.getText();
-        String tglKembali = tglKembaliField.getText();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tglSewa = sdf.format(tglSewaChooser.getDate());
+        String tglKembali = sdf.format(tglKembaliChooser.getDate());
         String supir = supirField.getText();
         int totalHarga;
 
@@ -195,8 +169,8 @@ public class TambahDurasiSewaFrame extends JFrame {
             tipeMobilField.setText("");
             tahunMobilSewaField.setText("");
             nopolField.setText("");
-            tglSewaField.setText("");
-            tglKembaliField.setText("");
+            tglSewaChooser.setDate(null);
+            tglKembaliChooser.setDate(null);
             supirField.setText("");
             totalHargaField.setText("");
         } else {
@@ -239,8 +213,12 @@ public class TambahDurasiSewaFrame extends JFrame {
             JOptionPane.showMessageDialog(this, "Kesalahan database: " + e.getMessage(), "Kesalahan Database", JOptionPane.ERROR_MESSAGE);
         } finally {
             try {
-                if (statement != null) statement.close();
-                if (connection != null) connection.close();
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -250,11 +228,6 @@ public class TambahDurasiSewaFrame extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new TambahDurasiSewaFrame();
-            }
-        });
+        SwingUtilities.invokeLater(() -> new TambahDurasiSewaFrame().setVisible(true));
     }
 }
