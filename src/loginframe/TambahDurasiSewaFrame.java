@@ -59,17 +59,17 @@ public class TambahDurasiSewaFrame extends JFrame {
         JLabel totalHargaLabel = new JLabel("Total Harga:");
         totalHargaLabel.setForeground(Color.WHITE);
 
-        namaField = new JTextField(20);
-        nikField = new JTextField(20);
-        alamatField = new JTextField(20);
-        noHPField = new JTextField(20);
-        tipeMobilField = new JTextField(20);
-        tahunMobilSewaField = new JTextField(20);
-        nopolField = new JTextField(20);
+        namaField = new JTextField(70);
+        nikField = new JTextField(70);
+        alamatField = new JTextField(70);
+        noHPField = new JTextField(70);
+        tipeMobilField = new JTextField(70);
+        tahunMobilSewaField = new JTextField(70);
+        nopolField = new JTextField(70);
         tglSewaChooser = new JDateChooser();
         tglKembaliChooser = new JDateChooser();
-        supirField = new JTextField(20);
-        totalHargaField = new JTextField(20);
+        supirField = new JTextField(70);
+        totalHargaField = new JTextField(70);
 
         JButton submitButton = new JButton("Submit");
         JButton backButton = new JButton("Kembali");
