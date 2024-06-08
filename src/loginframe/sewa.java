@@ -6,6 +6,7 @@ package loginframe;
  */
 
 import db.db_con;
+import java.awt.Image;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
@@ -14,14 +15,16 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import java.sql.Blob;
 import java.sql.*;
 import java.util.Vector;
 
-
-/**
- *
- * @author Wahid
- */
 public class sewa extends javax.swing.JFrame {
     Connection conn;
     ResultSet rs;
@@ -44,6 +47,9 @@ public class sewa extends javax.swing.JFrame {
         
         jLabelKetersediaan.setText("");
         jLabelTotalHarga.setText("");
+        jLabel1.setText("");
+        
+        setLocationRelativeTo(null);
         
         
         
@@ -82,76 +88,6 @@ public class sewa extends javax.swing.JFrame {
         }
     }
     
-    /*private void insertData() {
-        try {
-
-            if (!lblNama.getText().isEmpty()) {
-
-                if (!jikakeluar()) {
-
-                    JOptionPane.showMessageDialog(this, "maaf mobil ini sedang tidak tersedia");
-                } else {
-                    String kolom[] = {"peminjam", "nopol", "tgl_pinjaman", "tgl_kembali", "harga", "lama", "total"};
-                    java.util.Date tgl = (java.util.Date) this.jDateChooser1.getDate();
-                    java.util.Date tgl1 = (java.util.Date) this.jDateChooser2.getDate();
-
-                    String isi[] = {lblNama.getText(), boxnopol.getSelectedItem().toString(), new java.sql.Date(tgl.getTime()).toString(), new java.sql.Date(tgl1.getTime()).toString(), lbl_harga.getText(), txt_lama.getText(), txt_total.getText()};
-                    System.out.println(con.queryInsert("tb_transaksi", kolom, isi));
-
-                    JOptionPane.showMessageDialog(this, "Data Berhasil Disimpan");
-                    cekstatus();
-                    add_peminjam();
-                }
-
-
-            } else {
-                JOptionPane.showMessageDialog(this, "Data isian ada yang kosong");
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error input data");
-            System.out.println("salah");
-        }
-    }*/
-    
-    /*private void insertDatabase(String values) {
-        String namaTabel = "sewa";
-        String[] namaKolom = {"namaPenyewa", "nik", "alamat", "noHP", "tipeMobil", "tahunMobilSewa", "nopol", "tglSewa", "tglKembali", "supir", "totalHarga"};
-        String[] tableValues = values.split(",");
-        koneksi.databaseInsert(namaTabel, namaKolom, tableValues);
-    
-        if (result.equals("SUCCESS")) {
-            JOptionPane.showMessageDialog(this, "Data berhasil disimpan.");
-        } else {
-            JOptionPane.showMessageDialog(this, "Gagal menyimpan data.");
-        }
-    }*/
-    
-    /*private boolean insertDatabase(String values) {
-    String namaTabel = "sewa";
-    String[] namaKolom = {"namaPenyewa", "nik", "alamat", "noHP", "tipeMobil", "tahunMobilSewa", "nopol", "tglSewa", "tglKembali", "supir", "totalHarga"};
-    String[] tableValues = values.split(",");
-    
-    try {
-        koneksi.databaseInsert(namaTabel, namaKolom, tableValues);
-        return true;
-    } catch (Exception ex) {
-        ex.printStackTrace();
-        return false;
-    }
-    }*/
-    
-    /*private void insertDatabase(String values) {
-    String namaTabel = "sewa";
-    String[] namaKolom = {"namaPenyewa", "nik", "alamat", "noHP", "tipeMobil", "tahunMobilSewa", "nopol", "tglSewa", "tglKembali", "supir", "totalHarga"};
-    String[] tableValues = values.split(",");
-    String result = koneksi.databaseInsert(namaTabel, namaKolom, tableValues);
-
-    if (result.equals("SUCCESS")) {
-        JOptionPane.showMessageDialog(this, "Data berhasil disimpan.");
-    } else {
-        JOptionPane.showMessageDialog(this, "Gagal menyimpan data.");
-    }
-}*/
     private void insertIntoSewa(String nama, String nik, String alamat, String noHP, String tipeMobil,
                              String tahun, String nopolbox, String tglSewa, String tglAkhir,
                              String supir, String totalHarga) {
@@ -262,13 +198,15 @@ public class sewa extends javax.swing.JFrame {
         jLabelMobil1 = new javax.swing.JLabel();
         jLabelMobil3 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jButtonBack = new javax.swing.JButton();
+        jButtonSewa = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jTextFieldNama = new javax.swing.JTextField();
         jLabelNama = new javax.swing.JLabel();
         jLabelNik = new javax.swing.JLabel();
         jTextFieldNik = new javax.swing.JTextField();
-        jButtonSewa = new javax.swing.JButton();
         jLabelAlamat = new javax.swing.JLabel();
         jTextFieldAlamat = new javax.swing.JTextField();
         jLabelHp = new javax.swing.JLabel();
@@ -306,29 +244,56 @@ public class sewa extends javax.swing.JFrame {
         jLabelMobil3.setText("STATUS:");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(11, 96, 176));
 
+        jPanel1.setBackground(new java.awt.Color(11, 96, 176));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "FORM PENYEWAAN", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 24))); // NOI18N
         jPanel1.setPreferredSize(new java.awt.Dimension(1174, 659));
 
+        jPanel4.setBackground(new java.awt.Color(11, 96, 176));
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jButtonBack.setBackground(new java.awt.Color(240, 237, 207));
+        jButtonBack.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        jButtonBack.setText("Kembali");
+        jButtonBack.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonBackMouseClicked(evt);
+            }
+        });
+        jButtonBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBackActionPerformed(evt);
+            }
+        });
+        jPanel4.add(jButtonBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 27, 145, 45));
+
+        jButtonSewa.setBackground(new java.awt.Color(240, 237, 207));
+        jButtonSewa.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        jButtonSewa.setText("Sewa");
+        jButtonSewa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSewaActionPerformed(evt);
+            }
+        });
+        jPanel4.add(jButtonSewa, new org.netbeans.lib.awtextra.AbsoluteConstraints(187, 27, 145, 45));
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("picture");
+        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(219, 219, 219)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(249, Short.MAX_VALUE))
+            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 505, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(282, 282, 282))
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jTextFieldNama.addActionListener(new java.awt.event.ActionListener() {
@@ -346,14 +311,6 @@ public class sewa extends javax.swing.JFrame {
         jTextFieldNik.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldNikActionPerformed(evt);
-            }
-        });
-
-        jButtonSewa.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
-        jButtonSewa.setText("Sewa");
-        jButtonSewa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSewaActionPerformed(evt);
             }
         });
 
@@ -495,7 +452,7 @@ public class sewa extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabelHarga)
-                                        .addGap(0, 0, Short.MAX_VALUE))
+                                        .addGap(0, 79, Short.MAX_VALUE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jPanelHargaMobil, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addContainerGap())))
@@ -514,14 +471,6 @@ public class sewa extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jDateChooserMulai, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabelSampai)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jDateChooserAkhir, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabelDriver))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabelNama)
                                             .addComponent(jLabelNik)
@@ -532,14 +481,22 @@ public class sewa extends javax.swing.JFrame {
                                                 .addComponent(jLabelTotal)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addComponent(jLabelTotalHarga)))
-                                        .addGap(0, 0, Short.MAX_VALUE)))
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jDateChooserMulai, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jLabelSampai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jDateChooserAkhir, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabelDriver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jComboBoxDriver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jComboBoxDriver, 0, 67, Short.MAX_VALUE)
                                 .addGap(77, 77, 77))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonSewa, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(45, 45, 45))))
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -591,9 +548,9 @@ public class sewa extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelTotal)
                     .addComponent(jLabelTotalHarga))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                .addComponent(jButtonSewa, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(41, 41, 41))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -613,7 +570,7 @@ public class sewa extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 725, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -661,19 +618,6 @@ public class sewa extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Maaf, mobil yang Anda pilih sedang tidak tersedia.");
         }
-        /*if (ketersediaan != null) {
-        System.out.println("Sukses");
-        boolean isSuccess = insertDatabase(nama + "," + nik + "," + alamat + "," + noHP + "," + tipeMobil + "," + tahun + "," + nopolbox + "," + tglSewa + "," + tglAkhir + "," + supir + "," + totalHarga);
-        
-        if (isSuccess) {
-            JOptionPane.showMessageDialog(this, "Data berhasil disimpan.");
-        } else {
-            JOptionPane.showMessageDialog(this, "Gagal menyimpan data.");
-        }
-    } else {
-        JOptionPane.showMessageDialog(this, "Maaf, mobil yang Anda pilih sedang tidak tersedia.");
-    }*/
-        
     }//GEN-LAST:event_jButtonSewaActionPerformed
 
     private void jTextFieldAlamatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldAlamatActionPerformed
@@ -699,8 +643,10 @@ public class sewa extends javax.swing.JFrame {
         jLabelTahunMobil.setText("");
         jLabelHargaMobil.setText("");
         jLabelKetersediaan.setText("");
+        jLabel1.setText("");
+        jLabel1.setIcon(null);
         String st = (String) jComboBoxNopol.getSelectedItem();
-        String[] namaKolom = {"tahunMobil", "harga", "ketersediaan"};
+        String[] namaKolom = {"tahunMobil", "harga", "ketersediaan", "gambar"};
         String namaTabel = "list_mobil";
         ResultSet rst = koneksi.databaseSelect(namaKolom, namaTabel, "nopol = '" + st + "'");
         //System.out.println(rst);
@@ -709,8 +655,21 @@ public class sewa extends javax.swing.JFrame {
                 this.jLabelKetersediaan.setText(rst.getString("ketersediaan"));
                 this.jLabelTahunMobil.setText(rst.getString("tahunMobil"));
                 this.jLabelHargaMobil.setText(rst.getString("harga"));
+                Blob blob = rst.getBlob("gambar");
+                
+                int blobLength = (int) blob.length();  
+                byte[] blobAsBytes = blob.getBytes(1, blobLength);
+                
+                InputStream in = new ByteArrayInputStream(blobAsBytes);
+                BufferedImage image = ImageIO.read(in);
+                ImageIcon icon = new ImageIcon(image);
+                Image img = image.getScaledInstance(505, 591, Image.SCALE_SMOOTH);
+                jLabel1.setIcon(icon);
+
             }
         } catch (SQLException ex) {
+            Logger.getLogger(sewa.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
             Logger.getLogger(sewa.class.getName()).log(Level.SEVERE, null, ex);
         }
         
@@ -726,6 +685,19 @@ public class sewa extends javax.swing.JFrame {
         }
         totalHarga(harga);
     }//GEN-LAST:event_jComboBoxDriverActionPerformed
+
+    private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jButtonBackActionPerformed
+
+    private void jButtonBackMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonBackMouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        
+        menu Menu = new menu();
+        Menu.setVisible(true);
+    }//GEN-LAST:event_jButtonBackMouseClicked
 
     /**
      * @param args the command line arguments
@@ -757,13 +729,16 @@ public class sewa extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new sewa().setVisible(true);
+                sewa Sewa = new sewa();
+                Sewa.setVisible(true);
+                Sewa.setExtendedState(Sewa.getExtendedState() | Sewa.MAXIMIZED_BOTH);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton jButtonBack;
     private javax.swing.JButton jButtonSewa;
     private javax.swing.JComboBox<String> jComboBoxDriver;
     private javax.swing.JComboBox<String> jComboBoxMobil;
@@ -795,6 +770,7 @@ public class sewa extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanelHargaMobil;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JTextField jTextFieldAlamat;
