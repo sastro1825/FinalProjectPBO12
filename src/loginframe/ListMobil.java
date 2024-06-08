@@ -1,5 +1,11 @@
 package loginframe;
 
+import java.sql.*;
+import javax.swing.JOptionPane;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -11,10 +17,92 @@ package loginframe;
  */
 public class ListMobil extends javax.swing.JFrame {
 
+    Connection con;
+    ResultSet rs;
+    
     public ListMobil() {
         initComponents();
+        connectToDatabase();
+        loadNopolComboBox(jComboBoxNopol, "Toyota Avanza", 2022);
+        loadNopolComboBox(jComboBoxNopol1, "Daihatsu Xenia", 2021);
+        loadNopolComboBox(jComboBoxNopol2, "Toyota Kijang Innova", 2023);
+        loadNopolComboBox(jComboBoxNopol3, "Toyota Innova Venturer", 2021);
+        loadNopolComboBox(jComboBoxNopol4, "Hyundai Palisade", 2022);
+        loadNopolComboBox(jComboBoxNopol5, "Toyota Avanza", 2020);
     }
+    
+    private void connectToDatabase() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/rental_mobil","root","");
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(ListMobil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void loadNopolComboBox(javax.swing.JComboBox<String> comboBox, String carModel, int carYear) {
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        try {
+            String query = "SELECT nopol FROM list_mobil WHERE namaMobil = ? AND tahunMobil = ?";
+            pst = con.prepareStatement(query);
+            pst.setString(1, carModel);
+            pst.setInt(2, carYear);
+            rs = pst.executeQuery();
 
+            DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+            while (rs.next()) {
+                model.addElement(rs.getString("nopol"));
+            }
+            comboBox.setModel(model);
+        } catch (SQLException ex) {
+            Logger.getLogger(ListMobil.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeResources(rs, pst);
+        }
+    }
+    
+    private void closeResources(ResultSet rs, PreparedStatement pst) {
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (pst != null) {
+            try {
+                pst.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    private void checkAvailability(javax.swing.JComboBox<String> comboBox, javax.swing.JLabel label, String carModel, int carYear) {
+        String selectedNopol = (String) comboBox.getSelectedItem();
+
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        try {
+            String query = "SELECT ketersediaan FROM list_mobil WHERE nopol = ? AND namaMobil = ? AND tahunMobil = ?";
+            pst = con.prepareStatement(query);
+            pst.setString(1, selectedNopol);
+            pst.setString(2, carModel);
+            pst.setInt(3, carYear);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                String availability = rs.getString("ketersediaan");
+                label.setText(availability.equalsIgnoreCase("tersedia") ? "Tersedia" : "Tidak Tersedia");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ListMobil.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeResources(rs, pst);
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,43 +121,55 @@ public class ListMobil extends javax.swing.JFrame {
         jLabelStatus33 = new javax.swing.JLabel();
         jLabelStatus34 = new javax.swing.JLabel();
         jLabelStatus35 = new javax.swing.JLabel();
-        jLabelKetersediaan11 = new javax.swing.JLabel();
+        jLabelKetersediaan = new javax.swing.JLabel();
         keFormSewa = new javax.swing.JButton();
+        jComboBoxNopol = new javax.swing.JComboBox<>();
+        jLabelStatus36 = new javax.swing.JLabel();
         jPanel19 = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
         jLabelStatus60 = new javax.swing.JLabel();
         jLabelStatus61 = new javax.swing.JLabel();
-        jLabelStatus62 = new javax.swing.JLabel();
-        jLabelKetersediaan20 = new javax.swing.JLabel();
-        jButton21 = new javax.swing.JButton();
+        KeFormSewa1 = new javax.swing.JButton();
+        jLabelStatus37 = new javax.swing.JLabel();
+        jComboBoxNopol1 = new javax.swing.JComboBox<>();
+        jLabelKetersediaan1 = new javax.swing.JLabel();
+        jLabelStatus38 = new javax.swing.JLabel();
         jPanel20 = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
         jLabelStatus63 = new javax.swing.JLabel();
         jLabelStatus64 = new javax.swing.JLabel();
-        jLabelStatus65 = new javax.swing.JLabel();
-        jLabelKetersediaan21 = new javax.swing.JLabel();
-        jButton22 = new javax.swing.JButton();
+        KeFormSewa2 = new javax.swing.JButton();
+        jLabelKetersediaan2 = new javax.swing.JLabel();
+        jLabelStatus39 = new javax.swing.JLabel();
+        jLabelStatus40 = new javax.swing.JLabel();
+        jComboBoxNopol2 = new javax.swing.JComboBox<>();
         jPanel21 = new javax.swing.JPanel();
         jLabel23 = new javax.swing.JLabel();
         jLabelStatus66 = new javax.swing.JLabel();
         jLabelStatus67 = new javax.swing.JLabel();
-        jLabelStatus68 = new javax.swing.JLabel();
-        jLabelKetersediaan22 = new javax.swing.JLabel();
-        jButton23 = new javax.swing.JButton();
+        KeFormSewa4 = new javax.swing.JButton();
+        jLabelStatus43 = new javax.swing.JLabel();
+        jComboBoxNopol4 = new javax.swing.JComboBox<>();
+        jLabelStatus44 = new javax.swing.JLabel();
+        jLabelKetersediaan4 = new javax.swing.JLabel();
         jPanel22 = new javax.swing.JPanel();
         jLabel24 = new javax.swing.JLabel();
         jLabelStatus69 = new javax.swing.JLabel();
         jLabelStatus70 = new javax.swing.JLabel();
-        jLabelStatus71 = new javax.swing.JLabel();
-        jLabelKetersediaan23 = new javax.swing.JLabel();
-        jButton24 = new javax.swing.JButton();
+        KeFormSewa3 = new javax.swing.JButton();
+        jLabelStatus41 = new javax.swing.JLabel();
+        jComboBoxNopol3 = new javax.swing.JComboBox<>();
+        jLabelStatus42 = new javax.swing.JLabel();
+        jLabelKetersediaan3 = new javax.swing.JLabel();
         jPanel23 = new javax.swing.JPanel();
         jLabel25 = new javax.swing.JLabel();
         jLabelStatus72 = new javax.swing.JLabel();
         jLabelStatus73 = new javax.swing.JLabel();
-        jLabelStatus74 = new javax.swing.JLabel();
-        jLabelKetersediaan24 = new javax.swing.JLabel();
-        jButton25 = new javax.swing.JButton();
+        KeFormSewa5 = new javax.swing.JButton();
+        jLabelStatus45 = new javax.swing.JLabel();
+        jComboBoxNopol5 = new javax.swing.JComboBox<>();
+        jLabelStatus46 = new javax.swing.JLabel();
+        jLabelKetersediaan5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -91,9 +191,9 @@ public class ListMobil extends javax.swing.JFrame {
         jLabelStatus35.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabelStatus35.setText("STATUS:");
 
-        jLabelKetersediaan11.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabelKetersediaan11.setForeground(new java.awt.Color(255, 0, 51));
-        jLabelKetersediaan11.setText("stts");
+        jLabelKetersediaan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabelKetersediaan.setForeground(new java.awt.Color(255, 0, 51));
+        jLabelKetersediaan.setText("stts");
 
         keFormSewa.setText("Pesan Sekarang!");
         keFormSewa.addActionListener(new java.awt.event.ActionListener() {
@@ -101,6 +201,16 @@ public class ListMobil extends javax.swing.JFrame {
                 keFormSewaActionPerformed(evt);
             }
         });
+
+        jComboBoxNopol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxNopol.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxNopolActionPerformed(evt);
+            }
+        });
+
+        jLabelStatus36.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabelStatus36.setText("Nopol :");
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -110,38 +220,50 @@ public class ListMobil extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelStatus33)
-                            .addComponent(jLabelStatus34))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(keFormSewa))
+                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel10Layout.createSequentialGroup()
                         .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelStatus34)
+                            .addComponent(jLabelStatus33))
+                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel10Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabelStatus35)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabelKetersediaan11)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jLabelKetersediaan)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabelStatus36)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboBoxNopol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)))
+                        .addComponent(keFormSewa)))
+                .addContainerGap())
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addComponent(jLabelStatus33)
+                        .addGap(12, 12, 12)
+                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelStatus33)
+                            .addComponent(jComboBoxNopol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelStatus36))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelStatus34))
-                    .addComponent(keFormSewa, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelStatus35)
-                    .addComponent(jLabelKetersediaan11))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabelStatus35)
+                                .addComponent(jLabelKetersediaan))
+                            .addComponent(jLabelStatus34)))
+                    .addGroup(jPanel10Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(keFormSewa, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -155,19 +277,29 @@ public class ListMobil extends javax.swing.JFrame {
         jLabelStatus61.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabelStatus61.setText("Rp 650.000");
 
-        jLabelStatus62.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabelStatus62.setText("STATUS:");
-
-        jLabelKetersediaan20.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabelKetersediaan20.setForeground(new java.awt.Color(255, 0, 51));
-        jLabelKetersediaan20.setText("stts");
-
-        jButton21.setText("Pesan Sekarang!");
-        jButton21.addActionListener(new java.awt.event.ActionListener() {
+        KeFormSewa1.setText("Pesan Sekarang!");
+        KeFormSewa1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton21ActionPerformed(evt);
+                KeFormSewa1ActionPerformed(evt);
             }
         });
+
+        jLabelStatus37.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabelStatus37.setText("Nopol :");
+
+        jComboBoxNopol1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxNopol1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxNopol1ActionPerformed(evt);
+            }
+        });
+
+        jLabelKetersediaan1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabelKetersediaan1.setForeground(new java.awt.Color(255, 0, 51));
+        jLabelKetersediaan1.setText("stts");
+
+        jLabelStatus38.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabelStatus38.setText("STATUS:");
 
         javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
         jPanel19.setLayout(jPanel19Layout);
@@ -181,14 +313,20 @@ public class ListMobil extends javax.swing.JFrame {
                             .addComponent(jLabelStatus60)
                             .addComponent(jLabelStatus61))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton21))
-                    .addGroup(jPanel19Layout.createSequentialGroup()
                         .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel19Layout.createSequentialGroup()
-                                .addComponent(jLabelStatus62)
+                                .addComponent(jLabelStatus37)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboBoxNopol1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel19Layout.createSequentialGroup()
+                                .addGap(31, 31, 31)
+                                .addComponent(jLabelStatus38)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabelKetersediaan20)))
+                                .addComponent(jLabelKetersediaan1)))
+                        .addGap(18, 18, 18)
+                        .addComponent(KeFormSewa1))
+                    .addGroup(jPanel19Layout.createSequentialGroup()
+                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -203,36 +341,50 @@ public class ListMobil extends javax.swing.JFrame {
                         .addComponent(jLabelStatus60)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabelStatus61))
-                    .addComponent(jButton21, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelStatus62)
-                    .addComponent(jLabelKetersediaan20))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(KeFormSewa1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jComboBoxNopol1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabelStatus37))
+                    .addGroup(jPanel19Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelStatus38)
+                            .addComponent(jLabelKetersediaan1))))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel22.setText("Kijang Innova 2023");
+        jLabel22.setText("Innova 2023");
         jLabel22.setAlignmentX(0.5F);
         jLabel22.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabelStatus63.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabelStatus63.setText("Kijang Innova 2023");
+        jLabelStatus63.setText("Innova 2023");
 
         jLabelStatus64.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabelStatus64.setText("Rp 950.000");
 
-        jLabelStatus65.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabelStatus65.setText("STATUS:");
-
-        jLabelKetersediaan21.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabelKetersediaan21.setForeground(new java.awt.Color(255, 0, 51));
-        jLabelKetersediaan21.setText("stts");
-
-        jButton22.setText("Pesan Sekarang!");
-        jButton22.addActionListener(new java.awt.event.ActionListener() {
+        KeFormSewa2.setText("Pesan Sekarang!");
+        KeFormSewa2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton22ActionPerformed(evt);
+                KeFormSewa2ActionPerformed(evt);
+            }
+        });
+
+        jLabelKetersediaan2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabelKetersediaan2.setForeground(new java.awt.Color(255, 0, 51));
+        jLabelKetersediaan2.setText("stts");
+
+        jLabelStatus39.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabelStatus39.setText("Nopol :");
+
+        jLabelStatus40.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabelStatus40.setText("STATUS:");
+
+        jComboBoxNopol2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxNopol2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxNopol2ActionPerformed(evt);
             }
         });
 
@@ -245,17 +397,22 @@ public class ListMobil extends javax.swing.JFrame {
                 .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel20Layout.createSequentialGroup()
                         .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelStatus63)
-                            .addComponent(jLabelStatus64))
+                            .addComponent(jLabelStatus64)
+                            .addComponent(jLabelStatus63))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton22))
-                    .addGroup(jPanel20Layout.createSequentialGroup()
                         .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel20Layout.createSequentialGroup()
-                                .addComponent(jLabelStatus65)
+                                .addComponent(jLabelStatus39)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboBoxNopol2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel20Layout.createSequentialGroup()
+                                .addComponent(jLabelStatus40)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabelKetersediaan21)))
+                                .addComponent(jLabelKetersediaan2)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(KeFormSewa2))
+                    .addGroup(jPanel20Layout.createSequentialGroup()
+                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -270,12 +427,16 @@ public class ListMobil extends javax.swing.JFrame {
                         .addComponent(jLabelStatus63)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabelStatus64))
-                    .addComponent(jButton22, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelStatus65)
-                    .addComponent(jLabelKetersediaan21))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(KeFormSewa2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jComboBoxNopol2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabelStatus39))
+                    .addGroup(jPanel20Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelStatus40)
+                            .addComponent(jLabelKetersediaan2))))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -289,19 +450,29 @@ public class ListMobil extends javax.swing.JFrame {
         jLabelStatus67.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabelStatus67.setText("Rp 1.300.000");
 
-        jLabelStatus68.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabelStatus68.setText("STATUS:");
-
-        jLabelKetersediaan22.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabelKetersediaan22.setForeground(new java.awt.Color(255, 0, 51));
-        jLabelKetersediaan22.setText("stts");
-
-        jButton23.setText("Pesan Sekarang!");
-        jButton23.addActionListener(new java.awt.event.ActionListener() {
+        KeFormSewa4.setText("Pesan Sekarang!");
+        KeFormSewa4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton23ActionPerformed(evt);
+                KeFormSewa4ActionPerformed(evt);
             }
         });
+
+        jLabelStatus43.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabelStatus43.setText("Nopol :");
+
+        jComboBoxNopol4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxNopol4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxNopol4ActionPerformed(evt);
+            }
+        });
+
+        jLabelStatus44.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabelStatus44.setText("STATUS:");
+
+        jLabelKetersediaan4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabelKetersediaan4.setForeground(new java.awt.Color(255, 0, 51));
+        jLabelKetersediaan4.setText("stts");
 
         javax.swing.GroupLayout jPanel21Layout = new javax.swing.GroupLayout(jPanel21);
         jPanel21.setLayout(jPanel21Layout);
@@ -315,14 +486,19 @@ public class ListMobil extends javax.swing.JFrame {
                             .addComponent(jLabelStatus66)
                             .addComponent(jLabelStatus67))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton23))
-                    .addGroup(jPanel21Layout.createSequentialGroup()
                         .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel21Layout.createSequentialGroup()
-                                .addComponent(jLabelStatus68)
+                                .addComponent(jLabelStatus43)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboBoxNopol4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel21Layout.createSequentialGroup()
+                                .addComponent(jLabelStatus44)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabelKetersediaan22)))
+                                .addComponent(jLabelKetersediaan4)))
+                        .addGap(18, 18, 18)
+                        .addComponent(KeFormSewa4))
+                    .addGroup(jPanel21Layout.createSequentialGroup()
+                        .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -337,12 +513,16 @@ public class ListMobil extends javax.swing.JFrame {
                         .addComponent(jLabelStatus66)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabelStatus67))
-                    .addComponent(jButton23, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelStatus68)
-                    .addComponent(jLabelKetersediaan22))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(KeFormSewa4, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jComboBoxNopol4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabelStatus43))
+                    .addGroup(jPanel21Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelStatus44)
+                            .addComponent(jLabelKetersediaan4))))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -356,19 +536,29 @@ public class ListMobil extends javax.swing.JFrame {
         jLabelStatus70.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabelStatus70.setText("Rp 800.000");
 
-        jLabelStatus71.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabelStatus71.setText("STATUS:");
-
-        jLabelKetersediaan23.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabelKetersediaan23.setForeground(new java.awt.Color(255, 0, 51));
-        jLabelKetersediaan23.setText("stts");
-
-        jButton24.setText("Pesan Sekarang!");
-        jButton24.addActionListener(new java.awt.event.ActionListener() {
+        KeFormSewa3.setText("Pesan Sekarang!");
+        KeFormSewa3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton24ActionPerformed(evt);
+                KeFormSewa3ActionPerformed(evt);
             }
         });
+
+        jLabelStatus41.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabelStatus41.setText("Nopol :");
+
+        jComboBoxNopol3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxNopol3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxNopol3ActionPerformed(evt);
+            }
+        });
+
+        jLabelStatus42.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabelStatus42.setText("STATUS:");
+
+        jLabelKetersediaan3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabelKetersediaan3.setForeground(new java.awt.Color(255, 0, 51));
+        jLabelKetersediaan3.setText("stts");
 
         javax.swing.GroupLayout jPanel22Layout = new javax.swing.GroupLayout(jPanel22);
         jPanel22.setLayout(jPanel22Layout);
@@ -382,14 +572,19 @@ public class ListMobil extends javax.swing.JFrame {
                             .addComponent(jLabelStatus69)
                             .addComponent(jLabelStatus70))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton24))
-                    .addGroup(jPanel22Layout.createSequentialGroup()
                         .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel22Layout.createSequentialGroup()
-                                .addComponent(jLabelStatus71)
+                                .addComponent(jLabelStatus41)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboBoxNopol3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel22Layout.createSequentialGroup()
+                                .addComponent(jLabelStatus42)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabelKetersediaan23)))
+                                .addComponent(jLabelKetersediaan3)))
+                        .addGap(18, 18, 18)
+                        .addComponent(KeFormSewa3))
+                    .addGroup(jPanel22Layout.createSequentialGroup()
+                        .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -404,12 +599,16 @@ public class ListMobil extends javax.swing.JFrame {
                         .addComponent(jLabelStatus69)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabelStatus70))
-                    .addComponent(jButton24, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelStatus71)
-                    .addComponent(jLabelKetersediaan23))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(KeFormSewa3, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jComboBoxNopol3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabelStatus41))
+                    .addGroup(jPanel22Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelStatus42)
+                            .addComponent(jLabelKetersediaan3))))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -423,19 +622,29 @@ public class ListMobil extends javax.swing.JFrame {
         jLabelStatus73.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabelStatus73.setText("Rp 500.000");
 
-        jLabelStatus74.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabelStatus74.setText("STATUS:");
-
-        jLabelKetersediaan24.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabelKetersediaan24.setForeground(new java.awt.Color(255, 0, 51));
-        jLabelKetersediaan24.setText("stts");
-
-        jButton25.setText("Pesan Sekarang!");
-        jButton25.addActionListener(new java.awt.event.ActionListener() {
+        KeFormSewa5.setText("Pesan Sekarang!");
+        KeFormSewa5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton25ActionPerformed(evt);
+                KeFormSewa5ActionPerformed(evt);
             }
         });
+
+        jLabelStatus45.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabelStatus45.setText("Nopol :");
+
+        jComboBoxNopol5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxNopol5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxNopol5ActionPerformed(evt);
+            }
+        });
+
+        jLabelStatus46.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabelStatus46.setText("STATUS:");
+
+        jLabelKetersediaan5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabelKetersediaan5.setForeground(new java.awt.Color(255, 0, 51));
+        jLabelKetersediaan5.setText("stts");
 
         javax.swing.GroupLayout jPanel23Layout = new javax.swing.GroupLayout(jPanel23);
         jPanel23.setLayout(jPanel23Layout);
@@ -449,14 +658,19 @@ public class ListMobil extends javax.swing.JFrame {
                             .addComponent(jLabelStatus72)
                             .addComponent(jLabelStatus73))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton25))
-                    .addGroup(jPanel23Layout.createSequentialGroup()
                         .addGroup(jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel23Layout.createSequentialGroup()
-                                .addComponent(jLabelStatus74)
+                                .addComponent(jLabelStatus45)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboBoxNopol5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel23Layout.createSequentialGroup()
+                                .addComponent(jLabelStatus46)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabelKetersediaan24)))
+                                .addComponent(jLabelKetersediaan5)))
+                        .addGap(18, 18, 18)
+                        .addComponent(KeFormSewa5))
+                    .addGroup(jPanel23Layout.createSequentialGroup()
+                        .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -471,12 +685,16 @@ public class ListMobil extends javax.swing.JFrame {
                         .addComponent(jLabelStatus72)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabelStatus73))
-                    .addComponent(jButton25, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelStatus74)
-                    .addComponent(jLabelKetersediaan24))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(KeFormSewa5, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jComboBoxNopol5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabelStatus45))
+                    .addGroup(jPanel23Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelStatus46)
+                            .addComponent(jLabelKetersediaan5))))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
@@ -488,7 +706,7 @@ public class ListMobil extends javax.swing.JFrame {
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(81, 81, 81)
+                        .addGap(84, 84, 84)
                         .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addComponent(jPanel22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -568,31 +786,127 @@ public class ListMobil extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton25ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton25ActionPerformed
+    private void KeFormSewa5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KeFormSewa5ActionPerformed
+        String selectedNopol = (String) jComboBoxNopol5.getSelectedItem();
+        String ketersediaan = checkAvailability(selectedNopol);
 
-    private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton24ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton24ActionPerformed
+        if ("Tidak Tersedia".equalsIgnoreCase(ketersediaan)) {
+            JOptionPane.showMessageDialog(this, "Mobil tidak tersedia untuk disewa.", "Peringatan", JOptionPane.WARNING_MESSAGE);
+        } else {
+            // Create an instance of Sewa
+            sewa sewaForm = new sewa();
+            // Show the Sewa form
+            sewaForm.setVisible(true);
+            // Close the current form
+            this.dispose();
+        }
+    }//GEN-LAST:event_KeFormSewa5ActionPerformed
 
-    private void jButton23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton23ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton23ActionPerformed
+    private void KeFormSewa3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KeFormSewa3ActionPerformed
+        String selectedNopol = (String) jComboBoxNopol4.getSelectedItem();
+        String ketersediaan = checkAvailability(selectedNopol);
 
-    private void jButton22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton22ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton22ActionPerformed
+        if ("Tidak Tersedia".equalsIgnoreCase(ketersediaan)) {
+            JOptionPane.showMessageDialog(this, "Mobil tidak tersedia untuk disewa.", "Peringatan", JOptionPane.WARNING_MESSAGE);
+        } else {
+            // Create an instance of Sewa
+            sewa sewaForm = new sewa();
+            // Show the Sewa form
+            sewaForm.setVisible(true);
+            // Close the current form
+            this.dispose();
+        }
+    }//GEN-LAST:event_KeFormSewa3ActionPerformed
 
-    private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
+    private void KeFormSewa4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KeFormSewa4ActionPerformed
+        String selectedNopol = (String) jComboBoxNopol3.getSelectedItem();
+        String ketersediaan = checkAvailability(selectedNopol);
+
+        if ("Tidak Tersedia".equalsIgnoreCase(ketersediaan)) {
+            JOptionPane.showMessageDialog(this, "Mobil tidak tersedia untuk disewa.", "Peringatan", JOptionPane.WARNING_MESSAGE);
+        } else {
+            // Create an instance of Sewa
+            sewa sewaForm = new sewa();
+            // Show the Sewa form
+            sewaForm.setVisible(true);
+            // Close the current form
+            this.dispose();
+        }
+    }//GEN-LAST:event_KeFormSewa4ActionPerformed
+
+    private void KeFormSewa2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KeFormSewa2ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton21ActionPerformed
+        String selectedNopol = (String) jComboBoxNopol2.getSelectedItem();
+        String ketersediaan = checkAvailability(selectedNopol);
+
+        if ("Tidak Tersedia".equalsIgnoreCase(ketersediaan)) {
+            JOptionPane.showMessageDialog(this, "Mobil tidak tersedia untuk disewa.", "Peringatan", JOptionPane.WARNING_MESSAGE);
+        } else {
+            // Create an instance of Sewa
+            sewa sewaForm = new sewa();
+            // Show the Sewa form
+            sewaForm.setVisible(true);
+            // Close the current form
+            this.dispose();
+        }
+    }//GEN-LAST:event_KeFormSewa2ActionPerformed
+
+    private void KeFormSewa1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KeFormSewa1ActionPerformed
+        // TODO add your handling code here:
+        String selectedNopol = (String) jComboBoxNopol1.getSelectedItem();
+        String ketersediaan = checkAvailability(selectedNopol);
+
+        if ("Tidak Tersedia".equalsIgnoreCase(ketersediaan)) {
+            JOptionPane.showMessageDialog(this, "Mobil tidak tersedia untuk disewa.", "Peringatan", JOptionPane.WARNING_MESSAGE);
+        } else {
+            // Create an instance of Sewa
+            sewa sewaForm = new sewa();
+            // Show the Sewa form
+            sewaForm.setVisible(true);
+            // Close the current form
+            this.dispose();
+        }
+    }//GEN-LAST:event_KeFormSewa1ActionPerformed
 
     private void keFormSewaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keFormSewaActionPerformed
-        sewa FormSewa = new sewa();
-        FormSewa.setVisible(true);
-        this.dispose();
+        String selectedNopol = (String) jComboBoxNopol.getSelectedItem();
+        String ketersediaan = checkAvailability(selectedNopol);
+
+        if ("Tidak Tersedia".equalsIgnoreCase(ketersediaan)) {
+            JOptionPane.showMessageDialog(this, "Mobil tidak tersedia untuk disewa.", "Peringatan", JOptionPane.WARNING_MESSAGE);
+        } else {
+            // Create an instance of Sewa
+            sewa sewaForm = new sewa();
+            // Show the Sewa form
+            sewaForm.setVisible(true);
+            // Close the current form
+            this.dispose();
+        }
     }//GEN-LAST:event_keFormSewaActionPerformed
+
+    private void jComboBoxNopol1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxNopol1ActionPerformed
+        checkAvailability(jComboBoxNopol1, jLabelKetersediaan1, "Daihatsu Xenia", 2021);
+    }//GEN-LAST:event_jComboBoxNopol1ActionPerformed
+
+    private void jComboBoxNopolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxNopolActionPerformed
+        checkAvailability(jComboBoxNopol, jLabelKetersediaan, "Toyota Avanza", 2022);
+    }//GEN-LAST:event_jComboBoxNopolActionPerformed
+
+    private void jComboBoxNopol2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxNopol2ActionPerformed
+        checkAvailability(jComboBoxNopol2, jLabelKetersediaan2, "Toyota Kijang Innova", 2023);
+    }//GEN-LAST:event_jComboBoxNopol2ActionPerformed
+
+    private void jComboBoxNopol3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxNopol3ActionPerformed
+        checkAvailability(jComboBoxNopol3, jLabelKetersediaan3, "Toyota Innova Venturer", 2021);
+    }//GEN-LAST:event_jComboBoxNopol3ActionPerformed
+
+    private void jComboBoxNopol4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxNopol4ActionPerformed
+        checkAvailability(jComboBoxNopol4, jLabelKetersediaan4, "Hyundai Palisade", 2022);
+    }//GEN-LAST:event_jComboBoxNopol4ActionPerformed
+
+    private void jComboBoxNopol5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxNopol5ActionPerformed
+        checkAvailability(jComboBoxNopol5, jLabelKetersediaan5, "Toyota Avanza", 2020);
+    }//GEN-LAST:event_jComboBoxNopol5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -630,11 +944,17 @@ public class ListMobil extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton21;
-    private javax.swing.JButton jButton22;
-    private javax.swing.JButton jButton23;
-    private javax.swing.JButton jButton24;
-    private javax.swing.JButton jButton25;
+    private javax.swing.JButton KeFormSewa1;
+    private javax.swing.JButton KeFormSewa2;
+    private javax.swing.JButton KeFormSewa3;
+    private javax.swing.JButton KeFormSewa4;
+    private javax.swing.JButton KeFormSewa5;
+    private javax.swing.JComboBox<String> jComboBoxNopol;
+    private javax.swing.JComboBox<String> jComboBoxNopol1;
+    private javax.swing.JComboBox<String> jComboBoxNopol2;
+    private javax.swing.JComboBox<String> jComboBoxNopol3;
+    private javax.swing.JComboBox<String> jComboBoxNopol4;
+    private javax.swing.JComboBox<String> jComboBoxNopol5;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel21;
@@ -642,30 +962,36 @@ public class ListMobil extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabelKetersediaan11;
-    private javax.swing.JLabel jLabelKetersediaan20;
-    private javax.swing.JLabel jLabelKetersediaan21;
-    private javax.swing.JLabel jLabelKetersediaan22;
-    private javax.swing.JLabel jLabelKetersediaan23;
-    private javax.swing.JLabel jLabelKetersediaan24;
+    private javax.swing.JLabel jLabelKetersediaan;
+    private javax.swing.JLabel jLabelKetersediaan1;
+    private javax.swing.JLabel jLabelKetersediaan2;
+    private javax.swing.JLabel jLabelKetersediaan3;
+    private javax.swing.JLabel jLabelKetersediaan4;
+    private javax.swing.JLabel jLabelKetersediaan5;
     private javax.swing.JLabel jLabelStatus33;
     private javax.swing.JLabel jLabelStatus34;
     private javax.swing.JLabel jLabelStatus35;
+    private javax.swing.JLabel jLabelStatus36;
+    private javax.swing.JLabel jLabelStatus37;
+    private javax.swing.JLabel jLabelStatus38;
+    private javax.swing.JLabel jLabelStatus39;
+    private javax.swing.JLabel jLabelStatus40;
+    private javax.swing.JLabel jLabelStatus41;
+    private javax.swing.JLabel jLabelStatus42;
+    private javax.swing.JLabel jLabelStatus43;
+    private javax.swing.JLabel jLabelStatus44;
+    private javax.swing.JLabel jLabelStatus45;
+    private javax.swing.JLabel jLabelStatus46;
     private javax.swing.JLabel jLabelStatus60;
     private javax.swing.JLabel jLabelStatus61;
-    private javax.swing.JLabel jLabelStatus62;
     private javax.swing.JLabel jLabelStatus63;
     private javax.swing.JLabel jLabelStatus64;
-    private javax.swing.JLabel jLabelStatus65;
     private javax.swing.JLabel jLabelStatus66;
     private javax.swing.JLabel jLabelStatus67;
-    private javax.swing.JLabel jLabelStatus68;
     private javax.swing.JLabel jLabelStatus69;
     private javax.swing.JLabel jLabelStatus70;
-    private javax.swing.JLabel jLabelStatus71;
     private javax.swing.JLabel jLabelStatus72;
     private javax.swing.JLabel jLabelStatus73;
-    private javax.swing.JLabel jLabelStatus74;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel19;
@@ -677,4 +1003,23 @@ public class ListMobil extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton keFormSewa;
     // End of variables declaration//GEN-END:variables
+    public String checkAvailability(String nopol) {
+    String ketersediaan = "";
+    String query = "SELECT ketersediaan FROM list_mobil WHERE nopol = ?";
+
+    try (PreparedStatement pst = con.prepareStatement(query)) {
+        pst.setString(1, nopol);
+        try (ResultSet rs = pst.executeQuery()) {
+            if (rs.next()) {
+                ketersediaan = rs.getString("ketersediaan");
+            }
+        }
+    } catch (SQLException ex) {
+        Logger.getLogger(ListMobil.class.getName()).log(Level.SEVERE, "Error while checking availability", ex);
+        // You might want to handle the exception further or rethrow it
+    }
+    return ketersediaan;
+}
+
+
 }
