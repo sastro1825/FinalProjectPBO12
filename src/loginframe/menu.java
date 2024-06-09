@@ -15,6 +15,8 @@ public class menu extends javax.swing.JFrame {
      */
     public menu() {
         initComponents();
+        
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -36,6 +38,7 @@ public class menu extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setBackground(new java.awt.Color(11, 96, 176));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "MANAJEMEN RENTAL MOBIL", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 24))); // NOI18N
         jPanel1.setPreferredSize(new java.awt.Dimension(1174, 659));
 
@@ -191,10 +194,10 @@ public class menu extends javax.swing.JFrame {
 
     private void jButtonCountMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCountMouseClicked
         // TODO add your handling code here:
-        /*this.dispose();
+        this.dispose();
         
-        HitungMundurThread count = new HitungMundurThread();
-        count.setVisible(true);*/
+        RentalGUI count = new RentalGUI();
+        count.setVisible(true);
     }//GEN-LAST:event_jButtonCountMouseClicked
 
     private void jButtonReturnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonReturnMouseClicked
