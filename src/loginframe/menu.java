@@ -49,6 +49,11 @@ public class menu extends javax.swing.JFrame {
                 jButtonListMouseClicked(evt);
             }
         });
+        jButtonList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonListActionPerformed(evt);
+            }
+        });
 
         jButtonSewa.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButtonSewa.setText("Penyewaan");
@@ -223,6 +228,10 @@ public class menu extends javax.swing.JFrame {
         LoginFrame login = new LoginFrame();
         login.setVisible(true);
     }//GEN-LAST:event_jButtonLogOutMouseClicked
+
+    private void jButtonListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonListActionPerformed
 
     /**
      * @param args the command line arguments
