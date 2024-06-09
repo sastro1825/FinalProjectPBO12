@@ -4,8 +4,6 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.sql.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class RentalGUI extends JFrame {
     private JLabel carLabel, returnLabel;
@@ -21,12 +19,17 @@ public class RentalGUI extends JFrame {
         setSize(400, 300);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new FlowLayout());
+        getContentPane().setBackground(new Color(0x40A2D8)); // Mengatur warna background
 
         carLabel = new JLabel("Nomor Polisi:");
+        carLabel.setForeground(Color.WHITE); // Mengatur warna teks
         carComboBox = new JComboBox<>();
         returnLabel = new JLabel("Return Date:");
-        backButton = new JButton("Back to Menu");
+        returnLabel.setForeground(Color.WHITE); // Mengatur warna teks
+        backButton = new JButton("Kembali"); // Mengganti teks tombol
         countdownArea = new JTextArea(10, 30);
+        countdownArea.setBackground(new Color(0x40A2D8)); // Mengatur warna background textarea
+        countdownArea.setForeground(Color.WHITE); // Mengatur warna teks textarea
 
         add(carLabel);
         add(carComboBox);
@@ -45,16 +48,18 @@ public class RentalGUI extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Add functionality to go back to menu
-                dispose(); // Close current window
-                new Menu().setVisible(true); // Show menu window
+                // Fungsi untuk kembali ke menu
+                dispose(); // Menutup jendela saat ini
+                new Menu().setVisible(true); // Menampilkan jendela menu
             }
         });
 
         Timer timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                updateCountdown(carComboBox.getSelectedItem().toString());
+                if (carComboBox.getSelectedItem() != null) {
+                    updateCountdown(carComboBox.getSelectedItem().toString());
+                }
             }
         });
         timer.start();
