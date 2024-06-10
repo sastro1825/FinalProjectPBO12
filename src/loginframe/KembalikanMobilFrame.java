@@ -34,6 +34,15 @@ public class KembalikanMobilFrame extends JFrame {
         tanggalKembaliChooser.setDateFormatString("yyyy-MM-dd");
 
         JButton submitButton = new JButton("Submit");
+        JButton kembaliButton = new JButton("Kembali");
+
+        kembaliButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new menu().setVisible(true);
+            }
+        });
 
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -67,6 +76,10 @@ public class KembalikanMobilFrame extends JFrame {
         gbc.gridy = 3;
         add(submitButton, gbc);
 
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        add(kembaliButton, gbc);
+
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -74,6 +87,7 @@ public class KembalikanMobilFrame extends JFrame {
             }
         });
 
+        getContentPane().setBackground(new java.awt.Color(11, 96, 176));
         setVisible(true);
     }
 
@@ -88,29 +102,61 @@ public class KembalikanMobilFrame extends JFrame {
             JOptionPane.showMessageDialog(this, "Mobil berhasil dikembalikan");
             namaField.setText("");
             modelMobilField.setText("");
-            tanggalKembaliChooser.setDate(null); 
+            tanggalKembaliChooser.setDate(null);
         } else {
             JOptionPane.showMessageDialog(this, "Gagal mengembalikan mobil", "Kesalahan Database", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-private boolean kembalikanMobil(String nama, String modelMobil, String tanggalKembali) {
-    try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rental_mobil", "root", "");
-         CallableStatement statement = connection.prepareCall("CALL KembalikanMobil(?,?,?)")) {
+    private boolean kembalikanMobil(String nama, String modelMobil, String tanggalKembali) {
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        PreparedStatement updateListMobilStmt = null;
 
-        statement.setString(1, nama);
-        statement.setString(2, modelMobil);
-        statement.setDate(3, java.sql.Date.valueOf(tanggalKembali));
+        try {
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rental_mobil", "root", "");
 
-        statement.execute();
+            String callSQL = "{CALL datasewa(?, ?, ?)}";
+            callableStatement = connection.prepareCall(callSQL);
+            callableStatement.setString(1, nama);
+            callableStatement.setString(2, modelMobil);
+            callableStatement.setDate(3, java.sql.Date.valueOf(tanggalKembali));
+            callableStatement.execute();
 
-        return true;
-    } catch (SQLException e) {
-        e.printStackTrace(); 
-        JOptionPane.showMessageDialog(this, "Kesalahan database: " + e.getMessage(), "Kesalahan Database", JOptionPane.ERROR_MESSAGE);
-        return false;
+            String updateListMobilSQL = "UPDATE list_mobil SET ketersediaan = 'Tersedia' WHERE namaMobil = ?";
+            updateListMobilStmt = connection.prepareStatement(updateListMobilSQL);
+            updateListMobilStmt.setString(1, modelMobil);
+            updateListMobilStmt.executeUpdate();
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Kesalahan database: " + e.getMessage(), "Kesalahan Database", JOptionPane.ERROR_MESSAGE);
+            return false;
+        } finally {
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (updateListMobilStmt != null) {
+                try {
+                    updateListMobilStmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
-}
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
