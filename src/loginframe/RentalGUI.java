@@ -19,7 +19,7 @@ public class RentalGUI extends JFrame {
         setSize(400, 300);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new FlowLayout());
-        getContentPane().setBackground(new Color(0x40A2D8)); // Mengatur warna background
+        getContentPane().setBackground(new Color(0x0B60B0)); // Mengatur warna background
 
         carLabel = new JLabel("Nomor Polisi:");
         carLabel.setForeground(Color.WHITE); // Mengatur warna teks
@@ -28,7 +28,7 @@ public class RentalGUI extends JFrame {
         returnLabel.setForeground(Color.WHITE); // Mengatur warna teks
         backButton = new JButton("Kembali"); // Mengganti teks tombol
         countdownArea = new JTextArea(10, 30);
-        countdownArea.setBackground(new Color(0x40A2D8)); // Mengatur warna background textarea
+        countdownArea.setBackground(new Color(0x0B60B0)); // Mengatur warna background textarea
         countdownArea.setForeground(Color.WHITE); // Mengatur warna teks textarea
 
         add(carLabel);
