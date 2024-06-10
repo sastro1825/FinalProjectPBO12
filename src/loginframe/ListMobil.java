@@ -18,7 +18,6 @@ import javax.swing.DefaultComboBoxModel;
 public class ListMobil extends javax.swing.JFrame {
 
     Connection con;
-    ResultSet rs;
     
     public ListMobil() {
         initComponents();
@@ -170,14 +169,24 @@ public class ListMobil extends javax.swing.JFrame {
         jComboBoxNopol5 = new javax.swing.JComboBox<>();
         jLabelStatus46 = new javax.swing.JLabel();
         jLabelKetersediaan5 = new javax.swing.JLabel();
+        jButtonBack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jDesktopPane1.setBackground(new java.awt.Color(11, 96, 176));
+
+        jPanel1.setBackground(new java.awt.Color(11, 96, 176));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "LIST MOBIL", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 24))); // NOI18N
         jPanel1.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
         jPanel1.setPreferredSize(new java.awt.Dimension(1186, 671));
 
+        jPanel8.setBackground(new java.awt.Color(11, 96, 176));
+
+        jPanel10.setBackground(new java.awt.Color(240, 237, 207));
+        jPanel10.setBorder(new javax.swing.border.MatteBorder(null));
+
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/avanza2022.jpg"))); // NOI18N
         jLabel12.setText("Avanza 2022");
         jLabel12.setAlignmentX(0.5F);
         jLabel12.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -266,7 +275,10 @@ public class ListMobil extends javax.swing.JFrame {
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
+        jPanel19.setBackground(new java.awt.Color(240, 237, 207));
+
         jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/xenia2021.jpg"))); // NOI18N
         jLabel21.setText("Xenia 2021");
         jLabel21.setAlignmentX(0.5F);
         jLabel21.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -353,7 +365,10 @@ public class ListMobil extends javax.swing.JFrame {
                 .addContainerGap(32, Short.MAX_VALUE))
         );
 
+        jPanel20.setBackground(new java.awt.Color(240, 237, 207));
+
         jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/innova2023.jpg"))); // NOI18N
         jLabel22.setText("Innova 2023");
         jLabel22.setAlignmentX(0.5F);
         jLabel22.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -439,7 +454,10 @@ public class ListMobil extends javax.swing.JFrame {
                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
+        jPanel21.setBackground(new java.awt.Color(240, 237, 207));
+
         jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel23.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/palisade2022.jpg"))); // NOI18N
         jLabel23.setText("Palisade 2022");
         jLabel23.setAlignmentX(0.5F);
         jLabel23.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -525,7 +543,10 @@ public class ListMobil extends javax.swing.JFrame {
                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
+        jPanel22.setBackground(new java.awt.Color(240, 237, 207));
+
         jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel24.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/venturer2023.jpg"))); // NOI18N
         jLabel24.setText("Venturer 2023");
         jLabel24.setAlignmentX(0.5F);
         jLabel24.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -611,7 +632,10 @@ public class ListMobil extends javax.swing.JFrame {
                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
+        jPanel23.setBackground(new java.awt.Color(240, 237, 207));
+
         jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel25.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/avanza2020.jpg"))); // NOI18N
         jLabel25.setText("Avanza 2020");
         jLabel25.setAlignmentX(0.5F);
         jLabel25.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -712,11 +736,11 @@ public class ListMobil extends javax.swing.JFrame {
                         .addComponent(jPanel22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(81, 81, 81)
                         .addComponent(jPanel21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(92, 92, 92)
+                .addGap(89, 89, 89)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31))
+                .addGap(61, 61, 61))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -736,21 +760,38 @@ public class ListMobil extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(jPanel8);
 
+        jButtonBack.setBackground(new java.awt.Color(240, 237, 207));
+        jButtonBack.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        jButtonBack.setText("Kembali");
+        jButtonBack.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonBackMouseClicked(evt);
+            }
+        });
+        jButtonBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBackActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1482, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1482, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonBack))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(jButtonBack)
+                .addGap(21, 21, 21)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 836, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(127, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jDesktopPane1.setLayer(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -760,12 +801,12 @@ public class ListMobil extends javax.swing.JFrame {
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1561, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1504, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1008, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 887, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -773,14 +814,14 @@ public class ListMobil extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(9, Short.MAX_VALUE))
+                .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 6, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -908,6 +949,19 @@ public class ListMobil extends javax.swing.JFrame {
         checkAvailability(jComboBoxNopol5, jLabelKetersediaan5, "Toyota Avanza", 2020);
     }//GEN-LAST:event_jComboBoxNopol5ActionPerformed
 
+    private void jButtonBackMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonBackMouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+
+        menu menu = new menu();
+        menu.setVisible(true);
+    }//GEN-LAST:event_jButtonBackMouseClicked
+
+    private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_jButtonBackActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -949,6 +1003,7 @@ public class ListMobil extends javax.swing.JFrame {
     private javax.swing.JButton KeFormSewa3;
     private javax.swing.JButton KeFormSewa4;
     private javax.swing.JButton KeFormSewa5;
+    private javax.swing.JButton jButtonBack;
     private javax.swing.JComboBox<String> jComboBoxNopol;
     private javax.swing.JComboBox<String> jComboBoxNopol1;
     private javax.swing.JComboBox<String> jComboBoxNopol2;
