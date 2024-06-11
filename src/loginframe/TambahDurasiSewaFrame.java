@@ -28,14 +28,14 @@ public class TambahDurasiSewaFrame extends JFrame {
 
     public TambahDurasiSewaFrame() {
         setTitle("Tambah Durasi Sewa - Rental Mobil");
-        setSize(600, 500);
+        setSize(600, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         
         getContentPane().setBackground(Color.decode("#0B60B0"));
 
-        JLabel titleLabel = new JLabel("Tambah Durasi Sewa");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        JLabel titleLabel = new JLabel("TAMBAH DURASI SEWA");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
         titleLabel.setForeground(Color.BLACK);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
