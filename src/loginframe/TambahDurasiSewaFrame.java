@@ -32,10 +32,13 @@ public class TambahDurasiSewaFrame extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         
-        // Set background color
         getContentPane().setBackground(Color.decode("#0B60B0"));
 
-        // Create labels and set their foreground to white
+        JLabel titleLabel = new JLabel("Tambah Durasi Sewa");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setForeground(Color.BLACK);
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
         JLabel namaLabel = new JLabel("Nama:");
         namaLabel.setForeground(Color.WHITE);
         JLabel nikLabel = new JLabel("NIK:");
@@ -74,40 +77,41 @@ public class TambahDurasiSewaFrame extends JFrame {
         JButton submitButton = new JButton("Submit");
         JButton backButton = new JButton("Kembali");
 
-        // Set layout manager
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
 
-        // Add components to the frame
-        addComponent(gbc, 0, 0, namaLabel);
-        addComponent(gbc, 1, 0, namaField);
-        addComponent(gbc, 0, 1, nikLabel);
-        addComponent(gbc, 1, 1, nikField);
-        addComponent(gbc, 0, 2, alamatLabel);
-        addComponent(gbc, 1, 2, alamatField);
-        addComponent(gbc, 0, 3, noHPLabel);
-        addComponent(gbc, 1, 3, noHPField);
-        addComponent(gbc, 0, 4, tipeMobilLabel);
-        addComponent(gbc, 1, 4, tipeMobilField);
-        addComponent(gbc, 0, 5, tahunMobilSewaLabel);
-        addComponent(gbc, 1, 5, tahunMobilSewaField);
-        addComponent(gbc, 0, 6, nopolLabel);
-        addComponent(gbc, 1, 6, nopolField);
-        addComponent(gbc, 0, 7, tglSewaLabel);
-        addComponent(gbc, 1, 7, tglSewaChooser);
-        addComponent(gbc, 0, 8, tglKembaliLabel);
-        addComponent(gbc, 1, 8, tglKembaliChooser);
-        addComponent(gbc, 0, 9, supirLabel);
-        addComponent(gbc, 1, 9, supirField);
-        addComponent(gbc, 0, 10, totalHargaLabel);
-        addComponent(gbc, 1, 10, totalHargaField);
-        addComponent(gbc, 0, 11, backButton);
-        addComponent(gbc, 1, 11, submitButton);
+        gbc.gridwidth = 2;
+        addComponent(gbc, 0, 0, titleLabel);
+        gbc.gridwidth = 1;
 
-        // Add action listeners to buttons
+        addComponent(gbc, 0, 1, namaLabel);
+        addComponent(gbc, 1, 1, namaField);
+        addComponent(gbc, 0, 2, nikLabel);
+        addComponent(gbc, 1, 2, nikField);
+        addComponent(gbc, 0, 3, alamatLabel);
+        addComponent(gbc, 1, 3, alamatField);
+        addComponent(gbc, 0, 4, noHPLabel);
+        addComponent(gbc, 1, 4, noHPField);
+        addComponent(gbc, 0, 5, tipeMobilLabel);
+        addComponent(gbc, 1, 5, tipeMobilField);
+        addComponent(gbc, 0, 6, tahunMobilSewaLabel);
+        addComponent(gbc, 1, 6, tahunMobilSewaField);
+        addComponent(gbc, 0, 7, nopolLabel);
+        addComponent(gbc, 1, 7, nopolField);
+        addComponent(gbc, 0, 8, tglSewaLabel);
+        addComponent(gbc, 1, 8, tglSewaChooser);
+        addComponent(gbc, 0, 9, tglKembaliLabel);
+        addComponent(gbc, 1, 9, tglKembaliChooser);
+        addComponent(gbc, 0, 10, supirLabel);
+        addComponent(gbc, 1, 10, supirField);
+        addComponent(gbc, 0, 11, totalHargaLabel);
+        addComponent(gbc, 1, 11, totalHargaField);
+        addComponent(gbc, 0, 12, backButton);
+        addComponent(gbc, 1, 12, submitButton);
+
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
