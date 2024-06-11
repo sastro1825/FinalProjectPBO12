@@ -20,7 +20,7 @@ public class LoginFrame extends JFrame {
 
     public LoginFrame() {
         setTitle("Login - Rental Mobil");
-        setSize(400, 400); 
+        setSize(500, 500); 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
